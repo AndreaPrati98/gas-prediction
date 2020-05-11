@@ -114,6 +114,8 @@ for i = estremoBasso : ultimoGiornoUtile
 end
 
 Y = [vectGiorno4(2:end); vectDati(730)];
+vettore_di_uni = ones(numeroSettimaneDellaPhi, 1);
+phi_linear = [vettore_di_uni vectGiorno4 vectGiorno5 vectGiorno6 vectGiorno7  vectGiorno1 vectGiorno2 vectGiorno3];
 
 % ricordarsi che abbiamo buttato via gli ultimi quattro giorni e i primi cinque
 
