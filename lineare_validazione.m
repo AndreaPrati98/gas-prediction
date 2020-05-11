@@ -1,5 +1,5 @@
-%%Qui facciamo l'identificazione non con tutti i dati
-%%E' pieno di errori, da pensare bene e risolvere bene
+%% Qui facciamo l'identificazione non con tutti i dati
+%% E' pieno di errori, da pensare bene e risolvere bene
 clc 
 close all
 clear
@@ -24,11 +24,7 @@ vectDati = gasDataSet.dati;
 
 %%Indici per i for
 
-
-
-
-
-%% Primo grado
+%% costruzione vettori di giorni
 
 % devo crearmi due vettore, uno per ogni giorno e poi creare la matrice
 % settimana
@@ -38,8 +34,12 @@ vectDati = gasDataSet.dati;
 
 numeroDati = length(vectDati); 
 giorniSettimana = 7;
-numDatiUtili = numeroDati - mod(numeroDati, giorniSettimana);
-numSettimane = numDatiUtili / giorniSettimana;
+% numDatiUtili = numeroDati - mod(numeroDati, giorniSettimana);
+% numSettimane = numDatiUtili / giorniSettimana;
+
+settimaneDiValidazione = 34;
+numeroDatiValidazione = settimaneDiValidazione * giorniSettimana;
+numeroDatiIdentificazione = numeroDati - numeroDatiValidazione;
 
 primoGiornoUtile = 0;
 for i=1 : giorniSettimana
@@ -52,8 +52,8 @@ end
 estremoBasso = primoGiornoUtile;
 
 ultimoGiornoUtile = 0;
-for i=(numeroDati-7) : numeroDatiIdentificazione
-    if (vectGiornoSettimana(i)==3)
+for i=(numeroDatiIdentificazione - 7) : numeroDatiIdentificazione
+    if (vectGiornoSettimana(i) == 3)
        ultimoGiornoUtile = i;
     end
 end
@@ -75,7 +75,8 @@ j = 1; %fara da contatore di settimane, ricordarsi che gli array partono da 1...
 
 % per il for ho scelto questi intervalli perchè devo escludere dati "spuri"
 % che non saprei come trattare 
-%for i = 6 : 726 
+
+% considero 34 settimane di validazione
 
 for i = estremoBasso : ultimoGiornoUtile
     % devo scandire la matrice giornoSettimana_dato e assegnare in ogni
@@ -121,8 +122,8 @@ Y = [vectGiorno4(2:end); vectDati(730)];
 
 phi_0 = ones(numeroSettimaneDellaPhi, 1); 
 [theta_0, stdTheta_0] = lscov(phi_0, Y);
-vettore_di_uni = ones(numeroS, 1);
-phi_linear = [vectGiorno4 vectGiorno5 vectGiorno6 vectGiorno7  vectGiorno1 vectGiorno2 vectGiorno3];
+vettore_di_uni = ones(numeroSettimaneDellaPhi, 1);
+phi_linear = [vettore_di_uni vectGiorno4 vectGiorno5 vectGiorno6 vectGiorno7  vectGiorno1 vectGiorno2 vectGiorno3];
 
 
 [theta_linear, stdTheta_linear] = lscov(phi_linear, Y);
@@ -130,12 +131,9 @@ phi_linear = [vectGiorno4 vectGiorno5 vectGiorno6 vectGiorno7  vectGiorno1 vectG
 
 %%Provo a fare la stima usando il lineare
 %Voglio togliere 34 settimane ed usarle per la validazione
+%{
 
-settimaneDiValidazione = 34;
-settimaneDaConsiderare = numeroSettimaneDellaPhi - settimaneDiValidazione;
-
-
-for i=1 : giorni_da_togliere
+for i=1 : numeroDatiValidazione
     %disp(i);
     y_stimata(i) = phi_linear(i,:) * theta_linear;
 end
@@ -145,3 +143,6 @@ mercoledi = 1:settimane_non_considerate;
 scatter(mercoledi, y_stimata);
 hold on
 scatter(mercoledi,y_controllati,'r');
+%}
+
+
