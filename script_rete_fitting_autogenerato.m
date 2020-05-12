@@ -45,7 +45,7 @@ e = gsubtract(t,y);
 performance = perform(net,t,y)
 
 % View the Network
-view(net)
+%view(net)
 
 % Plots
 % Uncomment these lines to enable various plots.
@@ -56,17 +56,32 @@ view(net)
 %figure, plotfit(net,x,t)
 
 %%Faccio io lo scatter delle ultime quindici settimane e degli ultimi dati
-settimane_di_validazione = 15;
+settimane_di_validazione = 27;
 punto_di_partenza= length(Y) - settimane_di_validazione+1;
 vettoreOriginale = Y(punto_di_partenza:length(Y));
 %Ricordarsi che bisogna fare la trasposta per i dati di stima
 %Prendo le ultime righe della matrice e tutte e 8 le colonne
 matriceDatiStima = phi_linear(punto_di_partenza:length(Y), 1:8)';
 vettoreStimato = net(matriceDatiStima);
-settimane = 1:15;
+
+settimane = (1:settimane_di_validazione)';
+ordinataOriginale = vettoreOriginale;
+ordinataStimata = vettoreStimato';
 
 
-scatter (settimane,vettoreOriginale,'r','x')
+figure(1)
+scatter (settimane,ordinataOriginale,'r','x')
 hold on
 grid on
-scatter (settimane, vettoreStimato, 'b')
+scatter (settimane, ordinataStimata, 'b')
+legend('Dati', 'Previsioni')
+
+%Ora calcolo il vettore dei residui e lo plotto per ogni settimana
+%(attenzione che il vettore stimato è una riga e non una colonna)
+residui = ordinataOriginale - ordinataStimata;
+
+figure(2)
+scatter(settimane, residui, 'g','o')
+grid on
+legend('Valore residui')
+
