@@ -1,8 +1,0 @@
-
-clc 
-clear
-close all 
-
-
-load matPhiLinearDatiValTot.mat;
-% or

@@ -4,6 +4,6 @@ clear
 close all 
 
 
-load matPhiLinearDatiValTot.mat;
+load matPhiLinearDatiIdentificazioneTotali.mat;
 % ora ho la matrice
 
