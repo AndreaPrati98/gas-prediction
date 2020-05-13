@@ -3,7 +3,6 @@ clear
 close all 
 
 load gasDataSet.mat;
-load matPhiLinearDatiIdentificazioneTotali.mat;
 xString = 'giornoAnno';
 yString = 'giornoSettimana';
 zString = 'dati';
@@ -67,7 +66,10 @@ j = 1; %fara da contatore di settimane, ricordarsi che gli array partono da 1...
 
 % per il for ho scelto questi intervalli perchÃ¨ devo escludere dati "spuri"
 % che non saprei come trattare 
-
+%for i = 6 : 726 
+settimane_da_togliere = 34;
+giorni_da_togliere = settimane_da_togliere * giorniSettimana;
+giorni_considerati = 726-giorni_da_togliere;
 for i = estremoBasso : ultimoGiornoUtile
     % devo scandire la matrice giornoSettimana_dato e assegnare in ogni
     % casella il proprio valore
@@ -109,18 +111,11 @@ end
 
 gradoDesiderato = 3;
 
-%% questo ciclo for costruisce il blocco da 1
-numeroVariabili = giorniSettimana; % ovvero 7 variabili
+%% questo ciclo for costruisce i blocchi da 1
+numero
+phi_blocchiDaUno = [ones()];
 
-phi_blocchiDaUno = ones(numeroSettimaneDellaPhi, numeroVariabili * gradoDesiderato);
-
-k = 1;
-for i= 1 : gradoDesiderato % la i serve a fare le potenze
-    for j= 1 : numeroVariabili % mi aiuta a tener conto delle posizioni
-        vect = phi_linear(:, j+1); % il +1 esclude il primo vettore di soli uni
-        phi_blocchiDaUno(:, k) = vect.^i;
-        k = k + 1;
-    end
+for i= 1 : gradoDesiderato
+    
 end
 
-%% qui si costruisce il blocco da 2
