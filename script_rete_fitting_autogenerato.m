@@ -17,7 +17,10 @@ load vettoreMercolediTarget.mat
 %Devo fare la trasposta poichÃ¨ prende come colonna il vettore
 %degli input e ogni colonna Ã¨ l'i-esimo vettore input 
 %Lo stesso viene fatto per il target
-x = phi_linear';
+%Con questa prima cosa scelgo se includere la colonna di uni o meno
+%nell'identificazione
+phi_data = phi_linear(:,2:8);
+x = phi_data';
 t = Y'; 
 
 % Choose a Training Function
@@ -31,10 +34,31 @@ trainFcn = 'trainlm';  % Levenberg-Marquardt backpropagation.
 hiddenLayerSize = 10;
 net = fitnet(hiddenLayerSize,trainFcn);
 
-% Setup Division of Data for Training, Validation, Testing
-net.divideParam.trainRatio = 70/100;
-net.divideParam.valRatio = 15/100;
-net.divideParam.testRatio = 15/100;
+%Versione creata dal codice automatizzato che testa e valida dividendo in modo
+%causale il set che gli passo.
+%Setup Division of Data for Training, Validation, Testing
+%net.divideParam.trainRatio = 70/100;
+%net.divideParam.valRatio = 15/100;
+%net.divideParam.testRatio = 15/100;
+
+%Versione mia che provo a specificare io quali sono quelli da usare per
+%testing e validazione ecc..
+
+net.dividefcn = 'divideind';
+numeroSettimaneValidazione = 40;
+numeroSettimaneTraining = 104 - numeroSettimaneValidazione;
+indicePartenzaValidazione = 104 - numeroSettimaneValidazione;
+[trainInd,valInd,testInd] = divideind(...
+                            1:104,...
+                            1:numeroSettimaneTraining,...
+                            87:104,...%indicePartenzaValidazione
+                            71:86);
+
+net.divideParam.trainInd = trainInd;
+net.divideParam.valInd = valInd;
+net.divideParam.testInd = testInd;
+%Fine parte del codice mio che sostituisce il dividerand automatico
+
 
 % Train the Network
 [net,tr] = train(net,x,t);
@@ -42,7 +66,7 @@ net.divideParam.testRatio = 15/100;
 % Test the Network
 y = net(x);
 e = gsubtract(t,y);
-performance = perform(net,t,y)
+performance = perform(net,t,y);
 
 % View the Network
 %view(net)
@@ -60,8 +84,10 @@ settimane_di_validazione = 27;
 punto_di_partenza= length(Y) - settimane_di_validazione+1;
 vettoreOriginale = Y(punto_di_partenza:length(Y));
 %Ricordarsi che bisogna fare la trasposta per i dati di stima
-%Prendo le ultime righe della matrice e tutte e 8 le colonne
-matriceDatiStima = phi_linear(punto_di_partenza:length(Y), 1:8)';
+%Prendo le ultime righe della matrice e tutte e 8 le colonne, poi faccio
+%la trasposta poichè le reti neurali funzionano in modo trasposto rispetto
+%a come ragioniamo noi
+matriceDatiStima = phi_data(punto_di_partenza:length(Y), :)';
 vettoreStimato = net(matriceDatiStima);
 
 settimane = (1:settimane_di_validazione)';
@@ -70,6 +96,8 @@ ordinataStimata = vettoreStimato';
 
 
 figure(1)
+%Non mi vanno le label xlabel('Numero della settimana')
+%ylabel('Gas consumato nel mercoledì di quella settimana')
 scatter (settimane,ordinataOriginale,'r','x')
 hold on
 grid on
@@ -79,9 +107,13 @@ legend('Dati', 'Previsioni')
 %Ora calcolo il vettore dei residui e lo plotto per ogni settimana
 %(attenzione che il vettore stimato Ã¨ una riga e non una colonna)
 residui = ordinataOriginale - ordinataStimata;
-
+residuiInValoreAssoluto = abs(residui);
 figure(2)
-scatter(settimane, residui, 'g','o')
+xlabel('Numero della settimana')
+ylabel('Gas consumato nel mercoledì di quella settimana')
+scatter(settimane, residui, 'g','o');
 grid on
-legend('Valore residui')
+hold on
+%scatter(settimane, residuiInValoreAssoluto, 'r', 'x');
+legend('Valore residui', 'Valore residui in modulo');
 
