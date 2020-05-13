@@ -19,6 +19,8 @@ load vettoreMercolediTarget.mat
 %Lo stesso viene fatto per il target
 %Con questa prima cosa scelgo se includere la colonna di uni o meno
 %nell'identificazione
+
+%Da qui inizia lo script da copiare
 phi_data = phi_linear(:,2:8);
 x = phi_data';
 t = Y'; 
@@ -31,28 +33,29 @@ t = Y';
 trainFcn = 'trainlm';  % Levenberg-Marquardt backpropagation.
 
 % Create a Fitting Network
-hiddenLayerSize = 10;
+%Dopo l'incontro con garau ho messo cinque neuroni 
+hiddenLayerSize = 6;
 net = fitnet(hiddenLayerSize,trainFcn);
 
 %Versione creata dal codice automatizzato che testa e valida dividendo in modo
 %causale il set che gli passo.
 %Setup Division of Data for Training, Validation, Testing
-%net.divideParam.trainRatio = 70/100;
-%net.divideParam.valRatio = 15/100;
-%net.divideParam.testRatio = 15/100;
+% net.divideParam.trainRatio = 70/100;
+% net.divideParam.valRatio = 15/100;
+% net.divideParam.testRatio = 15/100;
 
 %Versione mia che provo a specificare io quali sono quelli da usare per
 %testing e validazione ecc..
 
 net.dividefcn = 'divideind';
-numeroSettimaneValidazione = 40;
-numeroSettimaneTraining = 104 - numeroSettimaneValidazione;
-indicePartenzaValidazione = 104 - numeroSettimaneValidazione;
+%numeroSettimaneValidazione = 30;
+%numeroSettimaneTraining = 104 - numeroSettimaneValidazione;
+%indicePartenzaValidazione = 104 - numeroSettimaneValidazione;
 [trainInd,valInd,testInd] = divideind(...
                             1:104,...
-                            1:numeroSettimaneTraining,...
-                            87:104,...%indicePartenzaValidazione
-                            71:86);
+                            1:70,...
+                            71:86,...%indicePartenzaValidazione
+                            87:104);
 
 net.divideParam.trainInd = trainInd;
 net.divideParam.valInd = valInd;
@@ -78,6 +81,8 @@ performance = perform(net,t,y);
 %figure, ploterrhist(e)
 %figure, plotregression(t,y)
 %figure, plotfit(net,x,t)
+
+
 
 %%Faccio io lo scatter delle ultime quindici settimane e degli ultimi dati
 settimane_di_validazione = 27;
@@ -114,6 +119,6 @@ ylabel('Gas consumato nel mercoledì di quella settimana')
 scatter(settimane, residui, 'g','o');
 grid on
 hold on
-%scatter(settimane, residuiInValoreAssoluto, 'r', 'x');
+scatter(settimane, residuiInValoreAssoluto, 'r', 'x');
 legend('Valore residui', 'Valore residui in modulo');
 
