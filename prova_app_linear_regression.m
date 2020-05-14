@@ -1,4 +1,4 @@
-function [trainedModel, validationRMSE] = trainRegressionModel(trainingData, responseData)
+function [trainedModel, validationRMSE] = prova_app_linear_regression(trainingData, responseData)
 % [trainedModel, validationRMSE] = trainRegressionModel(trainingData,
 % responseData)
 % Returns a trained regression model and its RMSE. This code recreates the

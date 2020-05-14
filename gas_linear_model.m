@@ -119,3 +119,7 @@ phi_linear = [vettore_di_uni vectGiorno4 vectGiorno5 vectGiorno6 vectGiorno7  ve
 
 % ricordarsi che abbiamo buttato via gli ultimi quattro giorni e i primi cinque
 
+
+%% prova funzione per la regressione lineare
+
+[trainedModel, validationRMSE] = prova_app_linear_regression(phi_linear, Y);
