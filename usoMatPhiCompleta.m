@@ -124,3 +124,10 @@ for i= 1 : gradoDesiderato % la i serve a fare le potenze
 end
 
 %% qui si costruisce il blocco da 2
+
+for i= 1
+
+
+
+
+
