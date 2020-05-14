@@ -82,7 +82,7 @@ performance = perform(net,t,y);
 %figure, plotregression(t,y)
 %figure, plotfit(net,x,t)
 
-
+%Fine script della rete 
 
 %%Faccio io lo scatter delle ultime quindici settimane e degli ultimi dati
 settimane_di_validazione = 27;
