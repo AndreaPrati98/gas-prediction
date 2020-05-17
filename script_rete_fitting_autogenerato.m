@@ -85,7 +85,7 @@ performance = perform(net,t,y);
 %Fine script della rete 
 
 %%Faccio io lo scatter delle ultime quindici settimane e degli ultimi dati
-settimane_di_validazione = 27;
+settimane_di_validazione = 30;
 punto_di_partenza= length(Y) - settimane_di_validazione+1;
 vettoreOriginale = Y(punto_di_partenza:length(Y));
 %Ricordarsi che bisogna fare la trasposta per i dati di stima
@@ -95,10 +95,12 @@ vettoreOriginale = Y(punto_di_partenza:length(Y));
 matriceDatiStima = phi_data(punto_di_partenza:length(Y), :)';
 vettoreStimato = net(matriceDatiStima);
 
+performanceValidazione = perform(net,vettoreOriginale,vettoreStimato);
+
+
 settimane = (1:settimane_di_validazione)';
 ordinataOriginale = vettoreOriginale;
 ordinataStimata = vettoreStimato';
-
 
 figure(1)
 %Non mi vanno le label xlabel('Numero della settimana')
@@ -113,6 +115,15 @@ legend('Dati', 'Previsioni')
 %(attenzione che il vettore stimato Ã¨ una riga e non una colonna)
 residui = ordinataOriginale - ordinataStimata;
 residuiInValoreAssoluto = abs(residui);
+
+%Calcolo anche SSR
+residuiAlQuadrato = residui.^2;
+SSR = sum(residuiAlQuadrato);
+%Calcolo massimo e minimo residuo in valore assoluto
+maxResiduoAbs = max(residuiInValoreAssoluto);
+minResiduoAbs = min(residuiInValoreAssoluto);
+
+
 figure(2)
 xlabel('Numero della settimana')
 ylabel('Gas consumato nel mercoledì di quella settimana')
