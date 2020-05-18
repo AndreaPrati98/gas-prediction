@@ -22,8 +22,9 @@ load vettoreMercolediTarget.mat
 
 %Da qui inizia lo script da copiare
 phi_data = phi_linear(:,2:8);
+phi_data = normalize(phi_data);
 x = phi_data';
-t = Y'; 
+t = normalize(Y)'; 
 
 % Choose a Training Function
 % For a list of all training functions type: help nntrain
@@ -87,7 +88,7 @@ performance = perform(net,t,y);
 %%Faccio io lo scatter delle ultime quindici settimane e degli ultimi dati
 settimane_di_validazione = 30;
 punto_di_partenza= length(Y) - settimane_di_validazione+1;
-vettoreOriginale = Y(punto_di_partenza:length(Y));
+vettoreOriginale = normalize(Y(punto_di_partenza:length(Y)));
 %Ricordarsi che bisogna fare la trasposta per i dati di stima
 %Prendo le ultime righe della matrice e tutte e 8 le colonne, poi faccio
 %la trasposta poichè le reti neurali funzionano in modo trasposto rispetto
