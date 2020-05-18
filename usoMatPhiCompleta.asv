@@ -179,8 +179,11 @@ for a= 1 : numeroVariabili
         for c= b+1 : numeroVariabili
            
             for z= 3: gradoDesiderato 
+                disp(mod(z,3))
                 if(mod(z, 3) == 0)
-                    vect = (phi_linear(:, a+1).^(z/3)).* (phi_linear(:, b+1).^(z/3)).* phi_linear(:, c+1).^(z/3); 
+                    contatoreCaso = contatoreCaso +1;
+                    disp('ciao' + contatoreCaso)
+                    vect = (phi_linear(:, i+1).^(z/3)).* (phi_linear(:, j+1).^(z/3)).* phi_linear(:, c+1).^(z/3); 
                     phi_bloccoDaTrePrimo(:, k) = vect;
                     k = k+1;
                 end
