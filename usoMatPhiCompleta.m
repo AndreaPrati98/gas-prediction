@@ -19,9 +19,6 @@ vectDati = gasDataSet.dati;
 %%Indici per i for
 
 
-
-
-
 %% Primo grado
 
 % devo crearmi due vettore, uno per ogni giorno e poi creare la matrice
@@ -199,12 +196,17 @@ phi_linear_notNormalized_1 = [phi_linear];
 phi_linear_notNormalized_2 = [phi_linear, phi_blocchiDaUno, phi_bloccoDaDuePrimo];
 
 phi_linear_notNormalized_3 = [phi_linear, phi_blocchiDaUno, phi_bloccoDaDue, phi_bloccoDaTrePrimo];
-
+%{
 phi_linear_normalized_1 = normalize(phi_linear_notNormalized_1(:, 2:8));
 phi_linear_normalized_2 = normalize(phi_linear_notNormalized_2(:, 2:50));
 phi_linear_normalized_3 = normalize(phi_linear_notNormalized_3(:, 2:127));
+%}
+phi_linear_normalized_1 = phi_linear_notNormalized_1(:, 2:8);
+phi_linear_normalized_2 = phi_linear_notNormalized_2(:, 2:50);
+phi_linear_normalized_3 = phi_linear_notNormalized_3(:, 2:127);
 
-Y_normalized = normalize(Y);
+%Y_normalized = normalize(Y);
+Y_normalized = Y;
 
 phi_id_1 = phi_linear_normalized_1(2:70, :);
 phi_id_2 = phi_linear_normalized_2(2:70, :);
