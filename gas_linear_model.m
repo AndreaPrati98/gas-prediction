@@ -19,6 +19,7 @@ vectGiornoAnno = gasDataSet.giornoAnno;
 vectGiornoSettimana = gasDataSet.giornoSettimana;
 vectDati = gasDataSet.dati;
 
+vectDati = normalize(vectDati);
 
 %%Indici per i for
 
