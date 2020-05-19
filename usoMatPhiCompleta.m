@@ -4,6 +4,8 @@ close all
 
 load gasDataSet.mat;
 load matPhiLinearDatiIdentificazioneTotali.mat;
+load vettoreMercolediTarget.mat;
+
 xString = 'giornoAnno';
 yString = 'giornoSettimana';
 zString = 'dati';
@@ -188,3 +190,79 @@ for a= 1 : numeroVariabili
         end
     end
 end
+
+
+%% grado uno
+
+phi_linear_notNormalized_1 = [phi_linear]; 
+
+phi_linear_notNormalized_2 = [phi_linear, phi_blocchiDaUno, phi_bloccoDaDuePrimo];
+
+phi_linear_notNormalized_3 = [phi_linear, phi_blocchiDaUno, phi_bloccoDaDue, phi_bloccoDaTrePrimo];
+
+phi_linear_normalized_1 = normalize(phi_linear_notNormalized_1(:, 2:8));
+phi_linear_normalized_2 = normalize(phi_linear_notNormalized_2(:, 2:50));
+phi_linear_normalized_3 = normalize(phi_linear_notNormalized_3(:, 2:127));
+
+Y_normalized = normalize(Y);
+
+phi_id_1 = phi_linear_normalized_1(2:70, :);
+phi_id_2 = phi_linear_normalized_2(2:70, :);
+phi_id_3 = phi_linear_normalized_3(2:70, :);
+
+phi_val_1 = phi_linear_normalized_1(71:end, :);
+phi_val_2 = phi_linear_normalized_2(71:end, :);
+phi_val_3 = phi_linear_normalized_3(71:end, :);
+
+Y_id = Y_normalized(2:70);
+Y_val = Y_normalized(71:104);
+[theta_1, std_1] = lscov(phi_id_1, Y_id);
+[theta_2, std_2] = lscov(phi_id_2, Y_id);
+[theta_3, std_3] = lscov(phi_id_3, Y_id);
+
+
+ordinataStimata = phi_val_1 * theta_1;
+figure(1)
+%Non mi vanno le label xlabel('Numero della settimana')
+%ylabel('Gas consumato nel mercoledì di quella settimana')
+scatter (1:34, Y_val,'r','x')
+hold on
+grid on
+scatter (1:34, ordinataStimata, 'b')
+legend('Dati', 'Previsioni')
+
+%Ora calcolo il vettore dei residui e lo plotto per ogni settimana
+%(attenzione che il vettore stimato Ã¨ una riga e non una colonna)
+residui = Y_val - ordinataStimata;
+residuiInValoreAssoluto = abs(residui);
+
+%Calcolo anche SSR
+residuiAlQuadrato = residui.^2;
+SSR_1 = sum(residuiAlQuadrato);
+%Calcolo massimo e minimo residuo in valore assoluto
+maxResiduoAbs = max(residuiInValoreAssoluto);
+minResiduoAbs = min(residuiInValoreAssoluto);
+
+
+figure(2)
+xlabel('Numero della settimana')
+ylabel('Gas consumato nel mercoledì di quella settimana')
+scatter(1:34, residui, 'g','o');
+grid on
+hold on
+scatter(1:34, residuiInValoreAssoluto, 'r', 'x');
+legend('Valore residui', 'Valore residui in modulo');
+
+phi_id_1 = phi_linear_normalized_1(1:70, :);
+ordinataStimata = phi_val_1 * theta_1;
+Y_id = Y_normalized(1:70);
+[theta_1, std_1] = lscov(phi_id_1, Y_id);
+
+residui = Y_val - ordinataStimata;
+residuiInValoreAssoluto = abs(residui);
+%Calcolo anche SSR
+residuiAlQuadrato = residui.^2;
+SSR_1_senza_grado_zero = sum(residuiAlQuadrato);
+%Calcolo massimo e minimo residuo in valore assoluto
+maxResiduoAbs = max(residuiInValoreAssoluto);
+minResiduoAbs = min(residuiInValoreAssoluto);
