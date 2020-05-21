@@ -192,9 +192,7 @@ end
 %% grado uno
 
 phi_linear_notNormalized_1 = [phi_linear]; 
-
 phi_linear_notNormalized_2 = [phi_linear, phi_blocchiDaUno, phi_bloccoDaDuePrimo];
-
 phi_linear_notNormalized_3 = [phi_linear, phi_blocchiDaUno, phi_bloccoDaDue, phi_bloccoDaTrePrimo];
 %{
 phi_linear_normalized_1 = normalize(phi_linear_notNormalized_1(:, 2:8));
