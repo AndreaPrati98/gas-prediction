@@ -1,114 +1,72 @@
 clc
 clear
 
-gasDataSet = readtable('gasITAday.xlsx', 'Range', 'A3:C732');
-xString = 'giornoAnno';
-yString = 'giornoSettimana';
-zString = 'dati';
-gasDataSet.Properties.VariableNames = {xString, yString, zString};
+load inputIdentificazione;
+load outputIdentificazione;
+load inputValidazione;
+load outputValidazione;
+load media;
+load deviazione;
 
-vectDati = gasDataSet.dati';
+inputIdentificazione = inputIdentificazione';
+outputIdentificazione = outputIdentificazione';
+inputValidazione = inputValidazione';
+outputValidazione = outputValidazione';
 
-%Inizio a creare la matrice coi dati
+settimaneIdentificazione = 74;
+settimaneValidazione = 30;
 
-weeks = floor(length(vectDati)/7); %Ricavo il numero di settimane
-week = 1:7; %Creo vettore 1,2...7
+goal = 0.0; % sum-squared error goal
+spread = 250;  % spread constant / larghezza campana
+MN = 7; % numero massimo di neuroni
+DF = 1; % ogni quanti neuroni mostro mse
 
-%ricavo input (tutte le settimane, in matrice) e l'output (l'ottavo giorno)
-for i=1:weeks
+sum = 0;
+
+net = newrb(inputIdentificazione, outputIdentificazione, goal, spread, MN, DF);
+for i = 1:settimaneValidazione
+    inputSettimana = inputValidazione(:, i);
     if i == 1
-        ottavoGiorno = vectDati(8);
-        matDati = vectDati(1:7);
-    else
-        ottavoGiorno = [ottavoGiorno; vectDati((i*7)+1)];
-        matDati = [matDati; vectDati(((i-1)*7+1):(i*7))];
-    end
+        predizione = sim(net, inputSettimana);
+        outputVero = outputValidazione(1,i);
+        errore = outputVero - predizione;
+        vectErrore = errore;
+        sum = (errore)^2;
+    elseif(i < settimaneValidazione)
+        predizione = [predizione, sim(net, inputSettimana)];
+        outputVero = [outputVero, outputValidazione(1,i)];
+        errore = outputVero(i) - predizione(i);
+        vectErrore = [vectErrore, errore];
+        sum = sum + (outputVero(i)-predizione(i))^2;
+    end 
+
 end
 
-%trasposte perchè la funzione le vuole così
-input = matDati';
-output = ottavoGiorno';
+deviation = std(vectErrore);
 
-goal = 1; % sum-squared error goal
-spread = 5;  % spread constant / larghezza campana
-MN = 100; % numero massimo di neuroni
-DF = 25; % valore magico
-
-net = newrb(input, output, goal, spread, MN);
-
-%Predico il valore per ogni settimana e lo confronto col valore effettivo
-for i = 1:weeks
-    if i == 1
-        prediction = sim(net, input(:, i));
-        real = input(1,i+1);
-        errore = real-prediction;
-    elseif(i < 104)
-        prediction = [prediction, sim(net, input(:, i))];
-        real = [real, input(1,i+1)];
-        errore = [errore, input(1,i+1)-prediction(i)];
-    end
-end
-
-erroreMedio = mean(abs(errore));
-var = var(abs(errore));
+outString = sprintf("Neu: %d, Spread: %d, RSS: %1.6f, SD: %1.6f\n", MN, spread, sum, deviation)
 
 figure(1)
 subplot(1,2,1);
-plot(1:103, real);
+plot(1:length(outputVero), outputVero);
 hold on
-plot(1:103, prediction);
+plot(1:length(outputVero), predizione);
+hold off
 legend('Dati reali','previsione')
-titolo = sprintf('Dati');
-title(titolo);
-xlabel('settimane');
-ylabel('Valore errore');
 
 subplot(1,2,2);
-plot(1:103, errore);
-titolo = sprintf('errore medio=%d, var = %d', erroreMedio, var)
-title(titolo);
-xlabel('settimane');
-ylabel('Valore errore');
+plot(1:length(outputVero), vectErrore);
+hold off
+max(abs(vectErrore));
+min(abs(vectErrore));
 
-
-%serve solo a vedere come varia l'errore con l'aumento del numero dei
-%neuroni
-numNeur =[0, 1, 2, 5 10, 20, 50, 100, 200, 500, 1000];
-
-for j = 1:12
-    if j<12
-        net = newrb(input, output, goal, spread, numNeur(j), DF);
-    else
-        net = newrb(input, output);
-    end
-
-    settimane = 104;
-    for i = 1:settimane
-        if i == 1
-            prediction = sim(net, input(:, i));
-            real = input(1,i+1);
-            errore = real-prediction;
-        elseif(i < 104)
-            prediction = [prediction, sim(net, input(:, i))];
-            real = [real, input(1,i+1)];
-            errore = [errore, input(1,i+1)-prediction(i)];
-        end
-    end
-    erroreMedio(j) = mean(abs(errore));
-    
-    if j<12
-        titolo = sprintf('errMed=%d - NumNeu=%d', erroreMedio(j), numNeur(j));
-    else
-        titolo = sprintf('errMed=%d - NumNeu=?', erroreMedio(j));
-    end
-    figure(2)
-    display(sprintf('plotto %d', j));
-    subplot(3,4,j)
-    plot(1:103, errore)
-    title(titolo);
-    xlabel('settimane');
-    ylabel('Valore errore');
-end
-
-figure(3);
-bar(erroreMedio);
+% %denormalizzo
+% figure(2)
+% subplot(1,2,1);
+% plot(1:length(outputVero), outputVero*deviazione+media);
+% hold on
+% plot(1:length(outputVero), predizione*deviazione+media);
+% legend('Dati reali','previsione')
+% 
+% subplot(1,2,2);
+% plot(1:length(outputVero), vectErrore);
