@@ -1,0 +1,15 @@
+clc 
+clear
+close all 
+
+load outputIdentificazione.mat
+load deviazione.mat
+load media.mat
+load inputIdentificazione.mat
+
+load outputValidazione.mat
+load inputValidazione.mat
+
+[row, column] = size(inputIdentificazione);
+phi_linear_1 = [ones()];
+
