@@ -1,5 +1,5 @@
 %Cic definitivo
-%clc
+clc
 clear
 close all
 
@@ -60,6 +60,7 @@ residuiInValoreAssoluto = abs(residui);
 %Calcolo anche SSR
 residuiAlQuadrato = residui.^2;
 SSRValidazione = sum(residuiAlQuadrato);
+disp("SSR VALIDAZIONE="+SSRValidazione);
 
 %Faccio lo scatter con i dati della validazione
 settimane = 1:length(ordinataOriginale);
@@ -81,5 +82,5 @@ ylabel('Gas consumato nel mercoledì di quella settimana')
 scatter(settimane, residui, 'g','o');
 grid on
 hold on
-%scatter(settimane, residuiInValoreAssoluto, 'r', 'x');
+scatter(settimane, residuiInValoreAssoluto, 'r', 'x');
 legend('Valore residui', 'Valore residui in modulo');
