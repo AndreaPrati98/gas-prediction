@@ -302,7 +302,37 @@ legend('Dati_veri', 'Previsioni')
 
 %% calcolo dei vari SSR ed MSE
 
+residui_ar = outputValidazione - ordinataStimata_ar;
+residui_quadrato_ar = residui_ar.^2;
+SSR_ar = sum(residui_quadrato_ar);
 
+residui_1 = outputValidazione - ordinataStimata_1;
+residui_quadrato_1 = residui_1.^2;
+SSR_1 = sum(residui_quadrato_1);
+ 
+residui_2 = outputValidazione - ordinataStimata_2;
+residui_quadrato_2 = residui_2.^2;
+SSR_2 = sum(residui_quadrato_2);
+
+residui_3 = outputValidazione - ordinataStimata_3;
+residui_quadrato_3 = residui_3.^2;
+SSR_3 = sum(residui_quadrato_3);
+
+residui_ar_max = max(abs(residui_ar));
+residui_1_max = max(abs(residui_1));
+residui_2_max = max(abs(residui_2));
+residui_3_max = max(abs(residui_3));
+
+diff = outputValidazione - ordinataStimata_ar;
+MSE_ar = mean(diff.^2);
+diff = outputValidazione - ordinataStimata_1;
+MSE_1 = mean(diff.^2);
+diff = outputValidazione - ordinataStimata_2;
+MSE_2 = mean(diff.^2);
+diff = outputValidazione - ordinataStimata_3;
+MSE_3 = mean(diff.^2);
+
+%% 
 
 
 
