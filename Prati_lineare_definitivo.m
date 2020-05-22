@@ -261,7 +261,6 @@ ordinataStimata_2 = phi_validazione_2 * theta_2;
 ordinataStimata_3 = phi_validazione_3 * theta_3;
 
 figure(1)
-title('Stima ar')
 xlabel('Numero settimana')
 ylabel('Valore gas')
 plot(X_vect_val, outputValidazione, 'o');
@@ -269,9 +268,9 @@ hold on
 grid on
 plot(X_vect_val, ordinataStimata_ar, 'x');
 legend('Dati_veri', 'Previsioni')
+title('Stima ar')
 
 figure(2)
-title('Stima primo grado')
 xlabel('Numero settimana')
 ylabel('Valore gas')
 plot(X_vect_val, outputValidazione, 'o');
@@ -279,9 +278,9 @@ hold on
 grid on
 plot(X_vect_val, ordinataStimata_1, 'x');
 legend('Dati_veri', 'Previsioni')
+title('Stima primo grado')
 
 figure(3)
-title('Stima secondo grado')
 xlabel('Numero settimana')
 ylabel('Valore gas')
 plot(X_vect_val, outputValidazione, 'o');
@@ -289,9 +288,9 @@ hold on
 grid on
 plot(X_vect_val, ordinataStimata_2, 'x');
 legend('Dati_veri', 'Previsioni')
+title('Stima secondo grado')
 
 figure(4)
-title('Stima terzo grado')
 xlabel('Numero settimana')
 ylabel('Valore gas')
 plot(X_vect_val, outputValidazione, 'o');
@@ -299,6 +298,8 @@ hold on
 grid on
 plot(X_vect_val, ordinataStimata_3, 'x');
 legend('Dati_veri', 'Previsioni')
+title('Stima terzo grado')
+
 
 %% calcolo dei vari SSR ed MSE
 
