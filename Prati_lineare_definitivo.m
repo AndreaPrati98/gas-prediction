@@ -194,6 +194,7 @@ end
 
 phi_bloccoDaDueSecondo_3grado_val = ones(row_validazione, 1);
 c = 1;
+contatore = 0;
 for a= 1 : numeroVariabili
     for b= 1 : numeroVariabili
         if(a ~= b)
@@ -204,13 +205,14 @@ for a= 1 : numeroVariabili
                         vect = (phi_linear(:, a).^j).* phi_linear(:, b).^ k;
                         phi_bloccoDaDueSecondo_3grado_val(:, c) = vect;
                         c = c + 1;
+                        contatore = contatore + 1;
                     end
                 end
            end
         end
     end
 end
-
+disp(contatore)
 phi_bloccoDaDue_3grado_val = [phi_bloccoDaDuePrimo_3grado_val, phi_bloccoDaDueSecondo_3grado_val];
 
 %% blocco da 3 validazione
@@ -300,8 +302,23 @@ plot(X_vect_val, ordinataStimata_3, 'x');
 legend('Dati_veri', 'Previsioni')
 title('Stima terzo grado')
 
+%% calcolo dei vari SSR ed MSE in identificazione
+ordinataIdentificazione_ar = phi_linear_ar * theta_ar;
+ordinataIdentificazione_1 = phi_linear_1 * theta_1;
+ordinataIdentificazione_2 = phi_linear_2 * theta_2;
+ordinataIdentificazione_3 = phi_linear_3 * theta_3;
 
-%% calcolo dei vari SSR ed MSE
+residui_ar_identificazione = outputIdentificazione  - ordinataIdentificazione_ar; 
+residui_1_identificazione = outputIdentificazione  - ordinataIdentificazione_1;
+residui_2_identificazione = outputIdentificazione  - ordinataIdentificazione_2;
+residui_3_identificazione = outputIdentificazione  - ordinataIdentificazione_3;
+
+SSR_ar_identificazione = sum(residui_ar_identificazione.^2);
+SSR_1_identificazione = sum(residui_1_identificazione.^2);
+SSR_2_identificazione = sum(residui_2_identificazione.^2);
+SSR_3_identificazione = sum(residui_3_identificazione.^2);
+
+%% calcolo dei vari SSR ed MSE in validazione
 
 residui_ar = outputValidazione - ordinataStimata_ar;
 residui_quadrato_ar = residui_ar.^2;
