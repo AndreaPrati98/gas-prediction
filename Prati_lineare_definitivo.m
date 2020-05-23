@@ -351,7 +351,16 @@ MSE_2 = mean(diff.^2);
 diff = outputValidazione - ordinataStimata_3;
 MSE_3 = mean(diff.^2);
 
-%% 
+%% intervalli di confidenza
+
+[row_theta, column_theta] = size(theta_1);
+n_meno_q = row_identificazione - row_theta;
+
+t_critic = tinv(0.95, n_meno_q);
+
+confInt = [(theta_1 - t_critic * std_1), (theta_1 + t_critic * std_1)];
+
+
 
 
 
