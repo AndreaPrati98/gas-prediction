@@ -256,6 +256,7 @@ phi_linear_3 = [ones(row_identificazione, 1), phi_blocchiDaUno_3grado, phi_blocc
 [theta_2, std_2] = lscov(phi_linear_2, outputIdentificazione);
 [theta_3, std_3] = lscov(phi_linear_3, outputIdentificazione);
 
+model_gasST_group = [theta_1, std_1];
 
 ordinataStimata_ar = phi_validazione_ar * theta_ar;
 ordinataStimata_1 = phi_validazione_1 * theta_1;
