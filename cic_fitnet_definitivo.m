@@ -67,20 +67,21 @@ settimane = 1:length(ordinataOriginale);
 
 
 figure(1)
-title('Confronti dati e previsioni')
-ylabel('Gas consumato nel mercoledì di quella settimana')
-xlabel('Numero della settimana casuale')
 scatter (settimane,ordinataOriginale,'r','x')
 hold on
 grid on
 scatter (settimane, ordinataStimata, 'b')
 legend('Dati', 'Previsioni')
+title('Confronti dati e previsioni')
+ylabel('Gas consumato nel mercoledì di quella settimana')
+xlabel('Numero della settimana casuale')
 
 figure(2)
-xlabel('Numero della settimana')
-ylabel('Gas consumato nel mercoledì di quella settimana')
 scatter(settimane, residui, 'g','o');
 grid on
 hold on
 scatter(settimane, residuiInValoreAssoluto, 'r', 'x');
 legend('Valore residui', 'Valore residui in modulo');
+xlabel('Numero della settimana')
+ylabel('Gas consumato nel mercoledì di quella settimana')
+
