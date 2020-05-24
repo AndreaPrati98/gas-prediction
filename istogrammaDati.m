@@ -12,7 +12,7 @@ vectGiornoSettimana = gasDataSet.giornoSettimana;
 vectDati = gasDataSet.dati;
 vectDati = sort(vectDati);
 
-range = linspace(0, 250, 26)
+range = linspace(0, 250, 26);
 somme = zeros(length(range));
 somme = somme(:, 1);
 
@@ -27,4 +27,8 @@ end
 
 figure(1);
 bar(range, somme, 0.9);
+title('Istogramma valori di gas');
+xlabel('Valori possibili assunti dal gas')
+ylabel('Numero di volte che viene assunto il valore sulla x')
 %'FaceColor', '#EDB120' 
+
