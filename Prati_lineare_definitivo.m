@@ -268,7 +268,7 @@ plot(X_vect_val, outputValidazione, 'o');
 hold on
 grid on
 plot(X_vect_val, ordinataStimata_ar, 'x');
-legend('Dati_veri', 'Previsioni')
+legend('Dati veri', 'Previsioni')
 title('Stima ar')
 xlabel('Numero settimana')
 ylabel('Valore gas')
@@ -280,7 +280,7 @@ plot(X_vect_val, outputValidazione, 'o');
 hold on
 grid on
 plot(X_vect_val, ordinataStimata_1, 'x');
-legend('Dati_veri', 'Previsioni')
+legend('Dati veri', 'Previsioni')
 title('Stima primo grado')
 xlabel('Numero settimana')
 ylabel('Valore gas')
@@ -290,7 +290,7 @@ plot(X_vect_val, outputValidazione, 'o');
 hold on
 grid on
 plot(X_vect_val, ordinataStimata_2, 'x');
-legend('Dati_veri', 'Previsioni')
+legend('Dati veri', 'Previsioni')
 title('Stima secondo grado')
 xlabel('Numero settimana')
 ylabel('Valore gas')
