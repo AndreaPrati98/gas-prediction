@@ -42,13 +42,19 @@ scatter(1:length(outputValidazione), outputValidazione, 'o');
 hold on
 scatter(1:length(outputValidazione), predizione, 'x');
 hold off
+grid on
 legend('Dati veri','previsione')
-xlabel('Numero settimana')
-ylabel('Valore gas')
+xlabel('Settimane')
+ylabel('Consumi gas')
+title('Confronto dati e previsioni');
 
 subplot(1,2,2);
 scatter(1:length(outputValidazione), vectErrore);
 hold off
+grid on
+title('Valore residui');
+ylabel('Residui');
+xlabel('Settimane');
 max(abs(vectErrore));
 min(abs(vectErrore));
 
@@ -75,6 +81,9 @@ plot(1:length(outputIdentificazione), outputIdentificazione);
 hold on
 plot(1:length(predizioneId), predizioneId);
 title('Predizione della funzione in identificazione');
+legend('Dati veri','previsione');
+ylabel('Consumo gas');
+xlabel('Settimane');
 
 %view(net)
 
@@ -82,7 +91,7 @@ title('Predizione della funzione in identificazione');
 figure(4);
 vectDati = sort(vectErrore);
 
-range = linspace(-0.3, 0.2, 20)
+range = linspace(-0.3, 0.2, 20);
 somme = zeros(length(range));
 somme = somme(:, 1);
 
@@ -96,3 +105,5 @@ for j = 1:length(vectDati)
 end
 bar(range, somme, 0.9);
 title('istogramma dei residui');
+ylabel('Frequenza');
+xlabel('Residui');
