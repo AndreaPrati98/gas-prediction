@@ -16,6 +16,8 @@ t = [outputIdentificazione; outputValidazione]';
 
 
 trainFcn = 'trainlm';  % Levenberg-Marquardt backpropagation.
+%Con un vettore specifico il numero di neuroni per ogni strato nascosto
+%con uno scalare vuol dire che ho solo uno strato nascosto
 hiddenLayerSize = 6;
 disp("Numero layer nascosti="+hiddenLayerSize);
 net = fitnet(hiddenLayerSize,trainFcn);
