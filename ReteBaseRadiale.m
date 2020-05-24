@@ -43,6 +43,8 @@ hold on
 scatter(1:length(outputValidazione), predizione, 'x');
 hold off
 legend('Dati veri','previsione')
+xlabel('Numero settimana')
+ylabel('Valore gas')
 
 subplot(1,2,2);
 scatter(1:length(outputValidazione), vectErrore);
@@ -58,10 +60,14 @@ hold on
 scatter(1:length(outputValidazione), predizione*deviazione+media, 'x');
 legend('Dati reali','previsione')
 title('Previsione sui dati di validazione');
+xlabel('Numero settimana')
+ylabel('Valore gas')
 
 subplot(1,2,2);
 scatter(1:length(outputValidazione), (outputValidazione*deviazione+media)-(predizione*deviazione+media));
 title('Residui non normalizzati');
+xlabel('Numero settimana')
+ylabel('Valore residui')
 
 %%Plot della previsione in identificazione
 figure(3);
@@ -69,6 +75,7 @@ plot(1:length(outputIdentificazione), outputIdentificazione);
 hold on
 plot(1:length(predizioneId), predizioneId);
 title('Predizione della funzione in identificazione');
+
 %view(net)
 
 %%Plot dell'istogramma dei residui
