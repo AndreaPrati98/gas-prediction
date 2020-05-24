@@ -300,7 +300,7 @@ plot(X_vect_val, outputValidazione, 'o');
 hold on
 grid on
 plot(X_vect_val, ordinataStimata_3, 'x');
-legend('Dati_veri', 'Previsioni')
+legend('Dati veri', 'Previsioni')
 title('Stima terzo grado')
 xlabel('Numero settimana')
 ylabel('Valore gas')
